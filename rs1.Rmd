@@ -171,7 +171,7 @@ Have you been knitting, committing, and pushing the Rmd file?! If not, now's the
 
 ## <!-- 2.1 -->Consider Figure 3.8 in Section 3.1.5.  What does `reorder(drg, mean_charge)` do?  To figure this out, recreate the plot, but use `x = drg` instead of `x = reorder(drg, mean_charge)`.  What happens?
 
-
+The "x = reorder(drg, mean_charge)" makes sure that the mean_charge data is in ascending order to make the visualization easy and more clean. If we replace "x = reorder(drg, mean_charge)" by "x = drg", then we will get bars which are not in ascending order as generated in the figure below.
 
 ```{r}
 library(tidyverse)
@@ -181,18 +181,36 @@ ChargesNJ <- MedicareCharges %>%
   filter(stateProvider == "NJ")
 
 # create the plot object
-##p <- 
-  
+p <- ggplot(data = ChargesNJ,
+            aes(x = drg, y = mean_charge)) +
+  geom_bar(fill = "gray", stat = "identity") +
+  ylab("Statewide Average Charges ($)") + xlab("Medical Procedure (DRG)") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
   
 # print the plot
-##p
+p
 ```
 
 
 ## <!-- 2.2 -->Replace `x = drg` with `x = reorder(drg, mean_charge)`, but also remove the `theme()` line.  Now what happens?  What was the purpose of the `theme()` line?  *Hint: You may need to knit the document and look at the pdf to better observe what's happening.*
 
-```{r}
+Now, the graph's x-axis value labels are written in horizontal manner, which makes them overlap on each other and more difficult to read. The theme() line in this graph serves a purpose of setting a theme for labels on x axis to increase their comprehension while visulaizing data.
 
+```{r}
+library(tidyverse)
+data(MedicareCharges)
+ChargesNJ <- MedicareCharges %>% 
+  ungroup() %>%
+  filter(stateProvider == "NJ")
+
+# create the plot object
+p <- ggplot(data = ChargesNJ,
+            aes(x = drg, y = mean_charge)) +
+  geom_bar(fill = "gray", stat = "identity") +
+  ylab("Statewide Average Charges ($)") + xlab("Medical Procedure (DRG)")
+  
+# print the plot
+p
 ```
 
 
@@ -203,9 +221,9 @@ Don't forget to commit and push!
 <!-- PROBLEM 3 ---------------------------------------------------------------->
 # <!-- 3 -->**Historical baby names** As you read through (or, even better, as you code along with...) the extended example on historical baby names in Section 3.3.1, write down two questions you have about any of the R code used in that example.  Your questions could be about what a specific part of the code---ggplot or not---is actually doing, or a more general question about any of the commands used. Please be thoughtful about your questions; we will use them (anonymously) in an exercise in class this week.
 
-1.
+1. Can you please explain the wtd.quantile?
 
-2.
+2. Can you please elaborate on %+% and similar syntax?
 
 \clearpage
 <!-- You are not required to code along with the section, but this is good practice that is strongly encouraged. Here's a code chunk to get you started...
