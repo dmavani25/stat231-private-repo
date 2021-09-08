@@ -206,30 +206,57 @@ KNIT & COMMIT & PUSH: "Add part 3 answers"
 
 ## <!-- 4.1 -->**Color Brewer**: Copy and paste the code from your last figure created in Part 3. Add a layer `scale_color_brewer()` before the `labs()` layer (don't forget to add a plus sign).  What happens?
 
-
+Color shades come into play
 
 
 ```{r brewer, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_brewer() +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 ## <!-- 4.2 -->Within the `scale_color_brewer()` function, add the options `type = "div"` and `palette = 1`.  Is this a good color scheme for this figure?  Why or why not? (Can you think of a figure for which this would be a good color scheme?)
 
-
+Awesome!
 
 
 ```{r brewer-options, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_brewer(type = "div", palette = 1) +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 
 ## <!-- 4.3 -->Check out the [scale brewer reference manual]https://ggplot2.tidyverse.org/reference/scale_brewer.html for more information about sequential, diverging, and qualitative color schemes available from Color Brewer.  The [color brewer site](http://colorbrewer2.org/#type=diverging&scheme=BrBG&n=3) is also helpful to visualize the different palettes  (also shown in [Figure 2.11](https://mdsr-book.github.io/mdsr2e/ch-vizI.html#fig:brewer) of MDSR). Does a sequential, diverging, or qualitative color scheme make sense for this figure?  Update the figure with one of the palettes from the appropriate scheme.
 
-
+Yes
 
 
 ```{r brewer-schemes, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_brewer(type = "div", palette = 1) +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 <!--
@@ -239,21 +266,48 @@ KNIT & COMMIT & PUSH: "Add part 4 color brewer answers"
 ## <!-- 4.4 -->**Manual**: Replace the `scale_color_brewer()` line with `scale_color_manual(values = c("green", "purple", "blue"))`.  Notice there are three colors I'm specifying, one for each of the three countries. 
 
 ```{r manual-colors, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_manual(values = c("green", "purple", "blue")) +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 
 ## <!-- 4.4 -->Don't like those colors?  You can be more exact by specifying hex color codes. Try replacing "green", "purple" and "blue" with "#05a05a", "#844185", "#024a81", respectively. 
 
 ```{r manual-hex, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_manual(values = c("#05a05a", "#844185", "#024a81")) +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 
 ## <!-- 4.5 -->To identify hex codes for more colors, check out: [color-hex.com](https://www.color-hex.com/).  Create one last figure with three colors of your choice assigned manually.
 
 ```{r my-colors, fig.width = 6.5, fig.height = 3}
-
+ggplot(data = unvotes_hr, mapping = aes(x = year, y = percent_yes, 
+                                        color = country)) +
+  geom_point(aes(shape = country)) +
+  geom_smooth(method = "loess", se = FALSE, lty = 3, size = 6, aes(shape = country)) +
+  scale_color_manual(values = c("#15a05b", "#345185", "#125a81")) +
+  labs(title = "Percentage of 'Yes' votes  on human rights issues",
+       subtitle = "UN General Assembly, 1946 to 2019",
+       y = "% Yes",
+       x = "Year",
+       color = "Country", shape = "Country")
 ```
 
 
