@@ -148,6 +148,7 @@ But, vivid colors are used in the graphic to represent different majors, so that
 3. The spacing between each of the 30 arcs serves a brilliant purpose of keeping the mixing at minimum and ensuring that the vision in clear even in the case of compilation figure.
 
 
+\newpage
 **Things that I would have done differently:**
 
 1. Introduce some type of scale in terms of length of arc or angle preferably.
