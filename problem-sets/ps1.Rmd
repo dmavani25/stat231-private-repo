@@ -209,8 +209,7 @@ Tropical_storms <- storms %>%
 ggplot(Tropical_storms, aes(x = lat, y = long)) + 
   geom_path(show.legend = FALSE, aes(color = name)) +
   facet_wrap(~ year, ncol = 2) +
-  labs(y = "Longitude", x = "Latitude", title = "Path of
-       Tropical Storms") +
+  labs(y = "Longitude", x = "Latitude", title = "Path of Tropical Storms") +
   scale_color_discrete(guide = "none")
 ```
 
