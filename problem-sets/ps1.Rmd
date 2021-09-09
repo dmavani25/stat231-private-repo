@@ -192,16 +192,16 @@ Note: Be sure you load the **nasaweather** package and use the `storms` dataset 
 
 It is best practice to load all packages in the first `setup` code chunk of a document.
 -->
-```{r}
+```{r, include = TRUE}
 library(mdsr)
 library(nasaweather)
 
 storms <- storms
-
-ggplot(storms, aes(x = lat, y = long)) + 
+Tropical_storms <- storms %>% filter(type == "Tropical Storm")
+ggplot(Tropical_storms, aes(x = lat, y = long)) + 
   geom_path(show.legend = FALSE, aes(color = name)) +
   facet_wrap(~ year,ncol = 2) +
-  labs(y = "Longitude", x = "Latitude", title = "Path of Storms")
+  labs(y = "Longitude", x = "Latitude", title = "Path of Tropical Storms")
 
 scale_color_discrete(guide = "none")
 ```
