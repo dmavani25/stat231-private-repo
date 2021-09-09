@@ -181,7 +181,11 @@ The graph tells us that the curve mapping payroll and winning percentages togeth
 
 ```{r, fig.height = 2.5, fig.width = 4.5, fig.align = 'center'}
 library(mdsr)
-MLBPlot <- ggplot(data = MLB_teams,aes(x = WPct,y = payroll)) + geom_point(color = "red") + labs(x = "Winning Percentage, %", y = "Payroll in context", title = "Relationship between payroll and winning percentages") + geom_smooth(color = "black")
+MLBPlot <- ggplot(data = MLB_teams,aes(x = WPct,y = payroll)) + 
+  geom_point(color = "red") + 
+  labs(x = "Winning Percentage, %", y = "Payroll in context", 
+       title = "Relationship between payroll and winning percentages") + 
+  geom_smooth(color = "black")
 
 MLBPlot
 ```
@@ -192,18 +196,21 @@ Note: Be sure you load the **nasaweather** package and use the `storms` dataset 
 
 It is best practice to load all packages in the first `setup` code chunk of a document.
 -->
-```{r, include = TRUE}
+```{r, message = FALSE, include = TRUE}
 library(mdsr)
 library(nasaweather)
 
 storms <- storms
-Tropical_storms <- storms %>% filter(type == "Tropical Storm")
+
+Tropical_storms <- storms %>% 
+  filter(type == "Tropical Storm")
+
 ggplot(Tropical_storms, aes(x = lat, y = long)) + 
   geom_path(show.legend = FALSE, aes(color = name)) +
-  facet_wrap(~ year,ncol = 2) +
-  labs(y = "Longitude", x = "Latitude", title = "Path of Tropical Storms")
-
-scale_color_discrete(guide = "none")
+  facet_wrap(~ year, ncol = 2) +
+  labs(y = "Longitude", x = "Latitude", title = "Path of
+       Tropical Storms") +
+  scale_color_discrete(guide = "none")
 ```
 
 
