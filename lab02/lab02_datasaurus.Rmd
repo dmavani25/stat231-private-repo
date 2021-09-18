@@ -134,16 +134,21 @@ To find out more about the dataset, type the following in your Console: `?datasa
 # <!-- 1 -->**Understanding the data** It is tempting to jump into visualization and analysis (much like we did on the first day), but it is critical as a statistician that we first understand the context and structure of the data. 
 
 ## <!-- 1.1 -->Based on the help file, how many rows and how many columns are in the data frame?
-
+1846 rows and 3 columns
 
 
 
 ## <!-- 1.2 -->Based on the help file, what variables are included in the data frame? Use Markdown formatting to provide a bulleted list, with each variable typeset in monotype font.
-
+* **dataset:** indicates which dataset the daata are from
+* **x:** x-values
+* **y:** y-values
 
 
 
 ## <!-- 1.3 -->How many observations are in each dataset within this larger data frame? Let's make a *frequency table* of the of the `dataset` variable to find out. 
+
+142
+
 > *Note 1*: The `kable()` function makes nicer looking tables when you knit. For quick "professional quality" pdf tables, add the argument `booktabs = TRUE`. Try knitting the document without piping the frequency table to `kable()`, with the pipe to `kable()`, and finally with the pipe to  `kable(booktabs = TRUE)` to see the differences.
 
 ```{r dataset-freq}
@@ -168,6 +173,9 @@ After you've added your responses to 1.1, 1.2, and 1.3, knit to make sure things
 
 ## <!-- 2.1 -->Calculate the correlation coefficient, $r$, between `x` and `y` for the `dino` dataset.  Below is the code you will need to complete this exercise. Basically, the answer is already given, but you need to include relevant bits in your Rmd document and successfully knit it and view the results.  *What does this correlation coefficient tell us about the relationship between `x` and `y` in the `dino` dataset?*
 
+r = -0.06447185	
+
+A feebly negative linear relationship through a fuzzy-firm linear rule.
 ```{r dino-cor}
 # Start with `datasaurus_dozen`
 # Filter for observations where `dataset == "dino"`
@@ -185,11 +193,13 @@ dino_data %>%
 
 ## <!-- 2.2 -->Now, plot `y` vs. `x` for the `dino` dataset using the `ggplot()` function. Its first argument is the data you're visualizing. Next we define the `aes`thetic mappings. In other words, the columns of the data that get mapped to certain aesthetic features of the plot, e.g. the $x$ axis will represent the variable called `x` and the $y$ axis will represent the variable called `y`. Then, we add another layer to this plot where we define which `geom`etric shapes we want to use to represent each observation in the data. In this case we want these to be points, hence `geom_point`. *What do you notice now about the relationship between x and y?* 
 
+It maps a borderline, which on entirety represent a dinosaur in the graph. I find the relation (r) between x & y to be pretty scattered, but more on the positive side.
+
 > *Note*: Overwhelmed by this information?! Don't worry!!  You will learn about the philosophy of building data visualizations in detail next week. For now, follow along with the code that is provided.
 \normalfont
 
 <!-- set `eval = TRUE` to make sure the plot is displayed in the knitted pdf -->
-```{r dino-plot, eval = FALSE, fig.width = 2.5, fig.height = 2}
+```{r dino-plot, eval = TRUE, fig.width = 2.5, fig.height = 2}
 ggplot(data = dino_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
@@ -203,11 +213,25 @@ TIME TO KNIT & COMMIT: "Add answers to 2.1, 2.2"
 
 ## <!-- 2.3 -->Now calculate the correlation coefficient between `x` and `y` for the `star` dataset. You can (and should) reuse code we introduced above, just replace the dataset name with the desired dataset. How does this value compare to the correlation coefficient from the `dino` dataset?
 
+In this case r = -0.0629611 which is slightly less negative than the case of dino.
+
+```{r star-cor}
+star_data <- datasaurus_dozen %>%
+  filter(dataset == "star")
+star_data %>%
+  summarize(r = cor(x, y))
+```
 
 
 
 ## <!-- 2.4 -->Plot `y` versus `x` for the `star` dataset.  Does the plot look the same as the plot of the `dino` data?
 
+No, the plot looks like a star in this case. While, in the case of dino dataset it looked like a dinosaur.
+
+```{r star-plot, eval = TRUE, fig.width = 2.5, fig.height = 2}
+ggplot(data = star_data, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
 
 
 
@@ -218,12 +242,24 @@ TIME TO KNIT & COMMIT: "Add answers to 2.3, 2.4"
 
 ## <!-- 2.5 -->Now calculate the correlation coefficient between `x` and `y` for the `circle` dataset. You can (and should) reuse code we introduced above, just replace the dataset name with the desired dataset. How does this value compare to the correlation coefficients from the other two datasets?
 
+The r value in case of circle is -0.6834336, which is slightly more negative than that of both star and dino.
 
+```{r circle-cor}
+circle_data <- datasaurus_dozen %>%
+  filter(dataset == "circle")
+circle_data %>%
+  summarize(r = cor(x, y))
+```
 
 
 ## <!-- 2.6 -->Plot `y` versus `x` for the `circle` dataset.  Does the plot look the same as either plot from the other two datasets?
 
+No, in this case it looks like a circle.
 
+```{r circle-plot, eval = TRUE, fig.width = 2.5, fig.height = 2}
+ggplot(data = circle_data, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
 
 
 <!-- 
@@ -234,7 +270,7 @@ TIME TO KNIT & COMMIT: "Add answers to 2.5, 2.6"
 # <!-- 3 -->**Making things more efficient** The previous problem had a lot of repetition. To make things more efficient, we can plot all the datasets at one using *facets*, and we can compute all the correlations at once using the `group_by()` function. The code is provided below.
 
 <!-- set `eval = TRUE` and adjust the figure dimensions so things don't look smushed in the pdf -->
-```{r plots-cors, eval = FALSE}
+```{r plots-cors, eval = TRUE}
 # Scatterplots by dataset
 ggplot(datasaurus_dozen, aes(x = x, y = y, color = dataset))+
   geom_point()+
@@ -250,12 +286,14 @@ datasaurus_dozen %>%
 
 ## <!-- 3.1 -->What do you notice?  Is the correlation coefficient an appropriate summary for any of these datasets?  Why or why not?
 
-
+I noticed that the graphs looked pretty different even if they had similar r values. Hence, I don't think correlation coefficient is an appropriate summary for any of these datasets.
 
 
 ## <!-- 3.2 -->What do you think `ncol = 3` does in the code above? What about `digits = 3`?
 
+I think "ncol = 3" is making 3 graphs in each columns.
 
+I think "digits = 3" is making the r-values in the table limited to 3 decimal places.
 
 
 <!-- 
@@ -271,14 +309,14 @@ If there's more time in class, I encourage you to continue on with the additiona
 
 ## <!-- 4.1 -->**Code chunk options** You might have noticed that this .Rmd lacks the usual global chunk options that most/all of my .Rmd files have.  Let's explore how these options work when compared to the default settings.  Add the following options (ONE AT A TIME) to the code chunk below (this is a modification of the code in Problem 3) and re-knit the PDF each time.  Try to identify what each option is doing to the PDF output.
 
-* `echo = FALSE`: 
-* `eval = FALSE`: 
-* `include = FALSE`: 
-* `comment = "##"`: 
-* `comment = ":)"`: 
-* `comment = NULL`: 
-* `prompt = TRUE`: 
-* `collapse = TRUE`: 
+* `echo = FALSE`: Prevents code, but not the output, from appearing into the knitted pdf file.
+* `eval = FALSE`: Prevents the output from appearing into the knitted pdf file. 
+* `include = FALSE`: Prevents code and results from appearing into the file.
+* `comment = "##"`: This will add "##" ahead of all the rows of the output table.
+* `comment = ":)"`: This will add ":)" ahead of all the rows of the output table.
+* `comment = NULL`: This will keep empty space ahead of all the rows of the output table.
+* `prompt = TRUE`: **SORRY!! I couldn't notice anything in this case.**
+* `collapse = TRUE`: This will include the r-value table for various datasets into the code chunk body.
 
 ```{r test-chunk-options}
 # Correlations by dataset (plain R output)
@@ -297,7 +335,7 @@ datasaurus_dozen %>%
 
 ## *Your turn*: Use inline R coding to write a sentence about the standard deviation of $x$ in the dino dataset reported to 1 decimal place. {-}
 
-
+> The standard deviation of $x$ is `r sd(dino_data$x) %>% round(1)` units.
 
 
 <!-- 

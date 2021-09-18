@@ -1,0 +1,158 @@
+---
+title: "Calendar Query Individual Project"
+subtitle: "STAT 231: Calendar Query"
+author: "Dhyey Mavani, Class of 2025"
+date: "Last updated \\today"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+# load packages
+library(tidyverse)
+library(lubridate)
+library(ical)
+
+# set code chunk defaults
+knitr::opts_chunk$set(tidy = F, # display code as typed
+                      size = "small", # slightly smaller code font
+                      message = FALSE,
+                      warning = FALSE,
+                      comment = "\t") 
+
+# set black & white default plot theme 
+theme_set(theme_classic())
+
+# improve digit and NA display 
+options(scipen = 1, knitr.kable.NA = '')
+```
+
+<!--
+Please remove my comments from the code chunks and customize the code chunks on your own, including chunk labels and options and code documentation.
+
+You can leave my markdown comments for guidance in writing your report.
+
+Please rename the headings. 
+You may add subheadings as desired to break up the report. 
+-->
+
+# YOUR REPORT HEADING <!-- (e.g., How do I spend my time?) -->
+
+<!--
+The code below is provided as a starting point for importing an `ics` file into R as a dataframe, doing some initial wrangling, and adding up the time spent on each activity. You are not required to use this code, so delete or modify it as you see fit. 
+
+If you are using the code, be sure to update the capitalized parts with the relevant path to where your `ics` file is located, and set `eval = TRUE`.
+
+As a reminder here's the link for exporting a Google calendar to ics (if on a Mac, you can hold cmd + click to open the page):
+https://support.google.com/calendar/answer/37111?hl=en&ref_topic=10509946
+-->
+```{r, eval = TRUE}
+# Data import and preliminary wrangling
+calendar_data <- "/Users/dhyeymavani/Desktop/FALL-2021/STAT-231 Data Science/stat231-private-repo/projects/calendar-query/DhyeyMavaniCalendar.ics" %>% 
+  # Use ical package to import into R
+  ical_parse_df() %>% 
+  # Convert to "tibble" data frame format
+  as_tibble() %>% 
+  mutate(
+    # Use lubridate package to wrangle dates and times
+    start_datetime = with_tz(start, tzone = "America/New_York"),
+    end_datetime = with_tz(end, tzone = "America/New_York"),
+    duration_min = end_datetime - start_datetime,
+    date = floor_date(start_datetime, unit = "day"),
+    # Convert calendar entry to all lowercase and rename
+    activity = tolower(summary))
+
+# Compute total duration of time for each day & activity
+activities <- calendar_data %>% 
+  group_by(date, activity) %>%
+  summarize(duration_min = sum(duration_min))
+```
+
+<!--
+Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
+-->
+
+I imported my 14-day data with Google calendar in iCal format. The below mentioned questions have variables defined according to the name of activity which represents the time spent doing that activity.
+
+
+## Identify what questions you are planning to focus on
+1. Document intended time doing things __(career_related_work, sleeping, sports, meditation, procrastination)__ versus actual time doing those things, and compare results.
+
+2. Document time spent in __(career_related_work) vs (total_well_being = sports + meditation) vs sleep__
+
+3. Document time spent in __procrastination__ vs __(total_well_being = sports + meditation)__
+
+
+<!--
+Describe what information is conveyed through data visualization #1 (that you'll create below) here.
+-->
+
+1. __(bar graph, day on x-axis, time on y-axis, colors for different activities)__
+
+
+```{r}
+# Code for data visualization #1
+# Be sure to provide meaningful title and axes labels 
+```
+
+<!--
+Describe what information is conveyed through data visualization #2 (that you'll create below) here.
+-->
+
+2. __(Pie chart, angle indicating time, color indicating activities)__
+
+
+```{r}
+# Code for data visualization #2
+# Be sure to provide meaningful title and axes labels 
+```
+
+<!--
+Describe what information is conveyed through the table (that you'll create below) here.
+
+
+
+For nicer tables, check out:
+
+* the kable function in the knitr package + the kableExtra package  
+  https://bookdown.org/yihui/rmarkdown-cookbook/kable.html 
+  https://bookdown.org/yihui/rmarkdown-cookbook/kableextra.html
+
+or 
+
+* the xtable package
+  https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf
+-->
+
+
+The rows would be time spent doing that activity day-wise and the average time row additionally.
+
+The columns will indicate different activities so that I can fill up the respective day-wise times on cells
+
+
+```{r, results = 'asis'}
+# Code for table
+```
+
+<!--
+To conclude, briefly summarize what you found in response to the questions posed here.
+-->
+
+
+\newpage
+# YOUR REFLECTION HEADING <!-- e.g., Reflection -->
+
+<!--
+Write your one-page reflection here in paragraph form.  In particular, address:
+
+* What difficulties in the data collection and analysis process did you encounter?  Identify two of your main hurdles in gathering accurate data.
+
+* What implications does that have for future data collection and/or analysis projects? 
+
+* How much data do you think you'd need to collect in order to answer your question(s) of interest? Would it be hard to collect that data? Why or why not?
+
+* As someone who provides data, what expectations do you have when you give your data (e.g. to Facebook, Google, MapMyRun, etc.)?  
+
+* As someone who analyzes others' data, what ethical responsibilities do you have?
+-->
+
+
