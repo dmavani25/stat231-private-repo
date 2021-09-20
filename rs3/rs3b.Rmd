@@ -1,6 +1,6 @@
 ---
 title: "Reading Set 3b: Shiny Tutorial Video"
-author: "Your Name"
+author: "Dhyey Mavani"
 date: "Due by 10pm ET on Monday"
 urlcolor: blue
 linkcolor: blue
@@ -132,7 +132,11 @@ When it comes time in the tutorial, open the R script as indicated, code along w
 
 ## <!-- 1.1 -->What are the 3 main components needed to build a shiny app, and what is the purpose of each?
 
+1. `ui <- fluidPage()`: Creates user interface by auto-generating HTML
 
+2. `server <- function(input, output) {}`: Allows input/output features on our app.
+
+3. `shinyApp(ui = ui, server = server)`: Links the user interface and server(input/output features) to create a complete webapp.
 
 <!-- PART 2 ---------------------------------------------------------------->
 # <!-- 2 -->**How to customize reactions (50 -- 60 minutes)** Continue on to [Part 2](https://player.vimeo.com/video/131218530#t=43m32s) of the tutorial (starting at 43:32).
@@ -156,11 +160,11 @@ When it comes time in the tutorial, open the R script as indicated, code along w
 
 ## <!-- 2.1 -->What is the general idea behind *reactivity* for a Shiny app?
 
-
+It makes the shiny app responsive to the user inputs by allowing it to update itself when there is any change in user input.
 
 ## <!-- 2.2 -->Give an example of how you might use one (or more) reactive value(s) in conjunction with a reactive function.
 
-
+We can control the process of updation of output by using the reactive methods. For example, we can create an update button which updates the output after you click the button rather than updating regularly while you are in the process of inputting the desired input.
 
 <!-- PART 3 ---------------------------------------------------------------->
 # <!-- 3 -->**How to customize appearance (40 -- 50 minutes)** Continue on to [Part 3](https://player.vimeo.com/video/131218530#t=1h33m41s) of the tutorial (starting at 1:33:41). Skip over the *Style with CSS" section, and jump to  the [2:24:35 mark](https://player.vimeo.com/video/131218530#t=2h24m35s) to wrap up the webinar! 
