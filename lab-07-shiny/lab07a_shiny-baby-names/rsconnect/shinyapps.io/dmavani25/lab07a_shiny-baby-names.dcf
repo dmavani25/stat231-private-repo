@@ -1,0 +1,13 @@
+name: lab07a_shiny-baby-names
+title: lab07a_shiny-baby-names
+username:
+account: dmavani25
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4697547
+bundleId: 5055756
+url: https://dmavani25.shinyapps.io/lab07a_shiny-baby-names/
+when: 1632227588.14071
+lastSyncTime: 1632227588.14073
+asMultiple: FALSE
+asStatic: FALSE

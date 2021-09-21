@@ -31,7 +31,7 @@ name_choices <- c("Brittney",
 ui <- fluidPage(
   
   # Application title
-  titlePanel("This is the title panel"),
+  titlePanel("Total number of births with the slected name v/s timeline in years"),
   
   # Sidebar with a dropdown name input and radio button to choose
   # corresponding sex assigned at birth
