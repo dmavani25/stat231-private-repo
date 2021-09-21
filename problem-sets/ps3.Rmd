@@ -1,6 +1,6 @@
 ---
 title: "Practice Set 3"
-author: "Your Name"
+author: "Dhyey Mavani"
 date: "Due by 10pm ET on Friday"
 urlcolor: blue
 linkcolor: blue

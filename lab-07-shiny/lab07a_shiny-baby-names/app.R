@@ -43,13 +43,13 @@ ui <- fluidPage(
       selectInput(inputId = "nm",
                   label = "Name:",
                   choices = name_choices,
-                  selected = "Brittney"),
+                  selected = "Dhyey"),
       
       # Choose Sex
       radioButtons(inputId = "sx",
                    label = "Sex:",
                    choices = c("M", "F"),
-                   selected = "F")
+                   selected = "M")
     ),
     
     # Show change in name use over time
