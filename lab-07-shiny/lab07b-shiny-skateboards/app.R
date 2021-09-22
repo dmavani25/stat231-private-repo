@@ -46,6 +46,8 @@ cmpy_choices <- unique(skateboards$company)
 #    ui    #
 ############
 ui <- navbarPage(
+  #adds better contrast to focus the user attention at important buttons & data.
+  theme = shinythemes::shinytheme("flatly"),
   title = "Electric Skateboards",
   
   # Tab 1: Histogram
@@ -59,12 +61,12 @@ ui <- navbarPage(
                     label = "Choose a variable of interest to plot:",
                     choices = hist_choice_values,
                     selected = "price"),
-        
+        #helps user to identify which checkbox corresponds to which drv
         checkboxGroupInput(inputId = "drv",
                            label = "Include drive types:",
                            choices = drv_choices,
                            selected = drv_choices,
-                           inline = TRUE)
+                           inline = FALSE)
       ),
       
       mainPanel(plotOutput(outputId = "hist"))
@@ -103,8 +105,55 @@ ui <- navbarPage(
         selectizeInput(inputId = "cmpy",
                        label = "Choose one or more companies:",
                        choices = cmpy_choices,
-                       selected = "DIYElectric",
-                       multiple = TRUE)
+                       selected = c("DIYElectric",
+                                    "LHB",
+                                    "Metroboard",
+                                    "Ollin",
+                                    "Enertion",
+                                    "LEIF Tech",
+                                    "ZBoard",
+                                    "Epic",
+                                    "Swagtron",
+                                    "Slick Revolution",
+                                    "Evolve",
+                                    "Mellow",
+                                    "Liftboard",
+                                    "Skullboard",
+                                    "ACTON",
+                                    "Genesis",
+                                    "I-Wonder",
+                                    "Jed-Boards",
+                                    "Koowheel",
+                                    "WowGo",
+                                    "Stark",
+                                    "Boosted",
+                                    "Teemo",
+                                    "Meepo",
+                                    "Yuneec",
+                                    "Inboard",
+                                    "WALNUTT",
+                                    "Backfire",
+                                    "Harvoo",
+                                    "Teamgee",
+                                    "Riptide",
+                                    "Atom",
+                                    "Predator",
+                                    "Nilox",
+                                    "Juiced",
+                                    "Huboards",
+                                    "Maxfind",
+                                    "Lou",
+                                    "Arc Boards",
+                                    "Stary",
+                                    "Marbel",
+                                    "Bolt",
+                                    "Onan"),
+                       multiple = TRUE),
+        checkboxGroupInput(inputId = "year",
+                           label = "Years: ",
+                           choices = c("2013","2014","2015","2016","2017","2018"),
+                           selected = c("2013","2014","2015","2016","2017","2018"),
+                           inline = FALSE)
       ),
       
       mainPanel(DT::dataTableOutput(outputId = "table"))
@@ -147,7 +196,7 @@ server <- function(input, output){
   
   output$hist <- renderPlot({
     ggplot(data = data_for_hist(), aes_string(x = input$histvar)) +
-      geom_histogram(color = "#2c7fb8", fill = "#7fcdbb", alpha = 0.7) +
+      geom_histogram(color = "#2c7fb8", fill = "#2c7fb8", alpha = 0.5) +
       labs(x = hist_choice_names[hist_choice_values == input$histvar],
            y = "Number of Skateboards")
   })
@@ -170,7 +219,9 @@ server <- function(input, output){
   
   # TAB 3: TABLE
   data_for_table <- reactive({
-    data <- filter(skateboards, company %in% input$cmpy)
+    data <- filter(skateboards, 
+                   company %in% input$cmpy,
+                   year %in% input$year)
   })
   
   output$table <- DT::renderDataTable({ 

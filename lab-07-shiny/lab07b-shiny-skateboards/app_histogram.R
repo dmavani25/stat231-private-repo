@@ -47,7 +47,7 @@ ui <- navbarPage(
                            label = "Include drive types:",
                            choices = drv_choices,
                            selected = drv_choices,
-                           inline = TRUE)
+                           inline = FALSE)
       ),
       
       mainPanel(plotOutput(outputId = "hist"))
@@ -68,7 +68,7 @@ server <- function(input, output){
   
   output$hist <- renderPlot({
     ggplot(data = data_for_hist(), aes_string(x = input$histvar)) +
-      geom_histogram(color = "#2c7fb8", fill = "#7fcdbb", alpha = 0.7) +
+      geom_histogram(color = "#2c7fb8", fill = "#2c7fb8", alpha = 0.5) +
       labs(x = hist_choice_names[hist_choice_values == input$histvar],
            y = "Number of Skateboards")
   })

@@ -1,0 +1,13 @@
+name: lab07b-shiny-skateboards
+title: lab07b-shiny-skateboards
+username:
+account: dmavani25
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4711432
+bundleId: 5061854
+url: https://dmavani25.shinyapps.io/lab07b-shiny-skateboards/
+when: 1632348101.50719
+lastSyncTime: 1632348101.50721
+asMultiple: FALSE
+asStatic: FALSE
