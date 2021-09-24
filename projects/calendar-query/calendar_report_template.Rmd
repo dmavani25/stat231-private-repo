@@ -7,6 +7,7 @@ output: pdf_document
 ---
 
 ```{r setup, include = FALSE}
+# SETUP CODE CHUNK:
 # load packages
 library(tidyverse)
 library(lubridate)
@@ -35,7 +36,7 @@ Please rename the headings.
 You may add subheadings as desired to break up the report. 
 -->
 
-# YOUR REPORT HEADING <!-- (e.g., How do I spend my time?) -->
+# How do I spend most precious and game-changing resource of the world: TIME?
 
 <!--
 The code below is provided as a starting point for importing an `ics` file into R as a dataframe, doing some initial wrangling, and adding up the time spent on each activity. You are not required to use this code, so delete or modify it as you see fit. 
@@ -47,7 +48,7 @@ https://support.google.com/calendar/answer/37111?hl=en&ref_topic=10509946
 -->
 ```{r, eval = TRUE}
 # Data import and preliminary wrangling
-calendar_data <- "/Users/dhyeymavani/Desktop/FALL-2021/STAT-231 Data Science/stat231-private-repo/projects/calendar-query/DhyeyMavaniCalendar.ics" %>% 
+calendar_data <- "FinalDhyeyCal.ics" %>% 
   # Use ical package to import into R
   ical_parse_df() %>% 
   # Convert to "tibble" data frame format
@@ -56,61 +57,145 @@ calendar_data <- "/Users/dhyeymavani/Desktop/FALL-2021/STAT-231 Data Science/sta
     # Use lubridate package to wrangle dates and times
     start_datetime = with_tz(start, tzone = "America/New_York"),
     end_datetime = with_tz(end, tzone = "America/New_York"),
-    duration_min = end_datetime - start_datetime,
+    duration_min = difftime(end_datetime, start_datetime, units = "mins"),
     date = floor_date(start_datetime, unit = "day"),
     # Convert calendar entry to all lowercase and rename
     activity = tolower(summary))
 
 # Compute total duration of time for each day & activity
+#Creating new dataset named activities
+#sums up the time of each activity in entire day
 activities <- calendar_data %>% 
   group_by(date, activity) %>%
-  summarize(duration_min = sum(duration_min))
+  summarize(duration_min = sum(as.numeric(duration_min)))
+
 ```
 
-<!--
-Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
--->
 
-I imported my 14-day data with Google calendar in iCal format. The below mentioned questions have variables defined according to the name of activity which represents the time spent doing that activity.
+## Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
 
 
-## Identify what questions you are planning to focus on
-1. Document intended time doing things __(career_related_work, sleeping, sports, meditation, procrastination)__ versus actual time doing those things, and compare results.
+I imported my 14-day data with Google calendar in `ical` format. The below mentioned questions have variables defined according to the name of activity which represents the time spent doing that activity. I defined an additional variable called `Total_well_being` which sums up the voluntary self-care in terms of meditation and sports for better analysis of below posed questions.
 
-2. Document time spent in __(career_related_work) vs (total_well_being = sports + meditation) vs sleep__
+### Question 1 
+Document intended time doing things **(career_related_work, sleeping, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
 
-3. Document time spent in __procrastination__ vs __(total_well_being = sports + meditation)__
+### Question 2 
+Document time spent in **(career_related_work) vs (total_well_being = sports + meditation) vs sleep**
+
+### Question 3
+Document time spent in **procrastination vs (total_well_being = sports + meditation)**
 
 
-<!--
-Describe what information is conveyed through data visualization #1 (that you'll create below) here.
--->
 
-1. __(bar graph, day on x-axis, time on y-axis, colors for different activities)__
+## Describe what information is conveyed through data visualization #1 (that you'll create below) here.
+
+**1. (bar graph, activity type on x-axis, time (both actual and intended) on y-axis, different colors for actual and intended)**
+
+This data visualization is in form of grouped bar graph with time on y-axis and activity names on x-axis. As we have two types of times namely `actual_duration_min` and `intended_duration_min`, I am using a color scheme to distinguish them as mentioned in the legend of visualization, which is titled *"type"*. I have stacked the bars relating different types of times with the same activity so that user can compare between the actual and intended times without any difficulty.
 
 
 ```{r}
-# Code for data visualization #1
-# Be sure to provide meaningful title and axes labels 
+# Code for data wrangling to create an appropriate data set for visualization #1
+
+# Creating a new data set to group the times just by activity
+# Summarizing the total time consumed per activity over the data period.
+time_activities <- activities %>%
+  group_by(activity) %>%
+  summarise("actual_duration_min" = sum(duration_min))
+
+# Hardcoding a new data frame which stores the intended times for each activity
+intended_time_activities <- data.frame(
+  activity = c("career_related_work", 
+               "meditation", 
+               "procrastination", 
+               "sleep", 
+               "sports"),
+  intended_duration_min = c(8300, 2160, 0, 4900, 1800))
+
+# Joining both of the above tables by activity
+# so as to have actual and intended times in same table
+activities_full <- time_activities %>%
+  inner_join(intended_time_activities, by = "activity")
+
+# Dividing each activity's time field into two parts: 
+# actual and intended, so as to make the visualization
+activities_full_longer <- activities_full %>%
+  pivot_longer(cols = actual_duration_min:intended_duration_min,
+               names_to = "type",
+               values_to = "time"
+  )
+# Data wrangling for visualization 1 ended. 
 ```
 
-<!--
-Describe what information is conveyed through data visualization #2 (that you'll create below) here.
--->
 
-2. __(Pie chart, angle indicating time, color indicating activities)__
+```{r plot-daily-activity-data, eval = TRUE}
+# Code for creating data visualization #1
 
+# Using `ggplot` to layout the data set and specifications
+# Used `position = "dodge"`to join the actual & intended bars under activity
+# Used labs to add labels to different components of graph generated 
+  ggplot(data = activities_full_longer,
+         mapping = aes(x = activity,
+                       y = time,
+                       color = type,
+                       fill = type)) +
+  geom_col(position = "dodge")+
+    labs(title = "Actual/intended time vs activity bar graph",
+         subtitle = "in 2 week period",
+         y = "Time",
+         x = "Activity")
+```
+\newpage
+## Describe what information is conveyed through data visualization #2 (that you'll create below) here.
+
+**2. (Bar chart, Y & color indicating actual time in hours, X indicating modified overarching activities)**
+
+This data visualization is in the form of bar chart with activities on x-axis and time on y-axis. I combined the activities sports and meditation into one overarching theme called `Total_well_being` so as to allow a more big picture comparision in order to answer the questions posed by me. In this graph we plot the actual times doing each activity in hours. Moreover, as a visual cue I am using the shades of blue color to signify the quantity of hours spent, so that user can have better comparison between the far placed bars which can be decieving by eye for some. 
 
 ```{r}
-# Code for data visualization #2
-# Be sure to provide meaningful title and axes labels 
+# Code for data wrangling to create an appropriate data set for visualization #2
+
+# Using `fct_collapse` I made a new dataset which has a row named 
+# `Total_well_being` which I define as `sports + meditation` 
+time_activities_new <- time_activities %>% 
+  mutate("new_activities" = fct_collapse(
+    activity, "Total_well_being" = c("sports", "meditation"))
+        )
+
+# Again summarizing total time per activity and dropping possible NAs.
+new_activities_dataset <- time_activities_new %>% group_by(new_activities) %>%
+  summarize("time" = sum(actual_duration_min)) %>%
+  drop_na()
+
+# redefining time in hours for better relatability
+hourly_new_activities_dataset <- new_activities_dataset %>%
+  mutate(time_in_hours = time/60)
 ```
 
+```{r}
+# Code for creating data visualization #2
+
+# Using `ggplot` to layout the data set and specifications
+# Used labs to add labels to different components of graph generated
+ggplot(data = hourly_new_activities_dataset,
+         mapping = aes(x = new_activities,
+                       y = time_in_hours,
+                       color = time_in_hours,
+                       fill = time_in_hours)) +
+  geom_col()+
+    labs(title = "Actual time doing each activity v/s 
+         broadly classified activities bar graph",
+         subtitle = "in 2 week period",
+         y = "Time (in hours)",
+         x = "Broadly Classified Activities")
+```
+
+
+## Describe what information is conveyed through the table (that you'll create below) here.
+
+
 <!--
-Describe what information is conveyed through the table (that you'll create below) here.
-
-
-
 For nicer tables, check out:
 
 * the kable function in the knitr package + the kableExtra package  
@@ -131,15 +216,28 @@ The columns will indicate different activities so that I can fill up the respect
 
 ```{r, results = 'asis'}
 # Code for table
+calendar_data
+activities
+
 ```
 
-<!--
-To conclude, briefly summarize what you found in response to the questions posed here.
--->
 
+## To conclude, briefly summarize what you found in response to the questions posed here.
+
+### Question 1: Document intended time doing things **(career_related_work, sleeping, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
+
+yada yada yada
+
+### Question 2: Document time spent in **(career_related_work) vs (total_well_being = sports + meditation) vs sleep**
+
+yada yada yada
+
+### Question 3: Document time spent in **procrastination vs (total_well_being = sports + meditation)**
+
+yada yada yada
 
 \newpage
-# YOUR REFLECTION HEADING <!-- e.g., Reflection -->
+# REFLECTION ON THE CALENDAR QUERY PROJECT <!-- e.g., Reflection -->
 
 <!--
 Write your one-page reflection here in paragraph form.  In particular, address:
