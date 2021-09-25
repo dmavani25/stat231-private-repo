@@ -43,3 +43,38 @@ The rows would be time spent doing that activity day-wise and the average time r
 
 The columns will indicate different activities so that I can fill up the repective day-wise times on cells
 
+
+........................
+ggplot(data = pie_chart_dataset,
+         mapping = aes(x = new_activities,
+                       y = time,
+                       color = new_activities,
+                       fill = new_activities)) +
+   geom_col()+
+    labs(title = "Actual time spent by activity Pie Chart",
+         subtitle = "in 2 week period",
+         y = "Time",
+         x = "Activity")+
+  coord_polar(theta = "y") +
+  theme(legend.position="none")+
+  theme_void()
+
+ggplot(data = pie_chart_dataset,
+         mapping = aes(#x = new_activities,
+                       y = time,
+                       color = new_activities,
+                       fill = new_activities)) +
+   geom_bar(stat = "count")+
+    labs(title = "Actual time spent by activity Pie Chart",
+         subtitle = "in 2 week period",
+         y = "Time",
+         x = "Activity")+
+  coord_polar(theta = "y") +
+  theme(legend.position="none")+
+  theme_void()
+
+geom_col(data = time_activities)+
+    labs(title = "Actual/intended time vs activity bar graph",
+         subtitle = "in 2 week period",
+         y = "Time",
+         x = "Activity")

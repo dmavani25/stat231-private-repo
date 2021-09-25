@@ -71,7 +71,7 @@ activities <- calendar_data %>%
 
 ```
 
-
+\newpage
 ## Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
 
 
@@ -87,7 +87,7 @@ Document time spent in **(career_related_work) vs (total_well_being = sports + m
 Document time spent in **procrastination vs (total_well_being = sports + meditation)**
 
 
-
+\newpage
 ## Describe what information is conveyed through data visualization #1 (that you'll create below) here.
 
 **1. (bar graph, activity type on x-axis, time (both actual and intended) on y-axis, different colors for actual and intended)**
@@ -191,7 +191,7 @@ ggplot(data = hourly_new_activities_dataset,
          x = "Broadly Classified Activities")
 ```
 
-
+\newpage
 ## Describe what information is conveyed through the table (that you'll create below) here.
 
 
@@ -216,25 +216,28 @@ The columns will indicate different activities so that I can fill up the respect
 
 ```{r, results = 'asis'}
 # Code for table
-calendar_data
-activities
+final_table <- calendar_data %>% 
+  group_by(date, activity) %>%
+  summarise(duration_min = sum(as.numeric(duration_min))) %>%
+  mutate(avg_duration_min = mean(as.numeric(duration_min)))
+
 
 ```
 
-
+\newpage
 ## To conclude, briefly summarize what you found in response to the questions posed here.
 
 ### Question 1: Document intended time doing things **(career_related_work, sleeping, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
 
-yada yada yada
+From the data visualization #1 we can see that for each of the activities there are two bars placed near each other in a color coded fashion to represent the actual and intended times for each activity in terms of height of the bars measured along the y-axis. We can infer from the visualization #1 that I am doing a pretty decent job of fulfilling my expectations in terms of career_related_work, sports, sleep and meditation. But, I am doing 330 mins of procrastination over the period of 2-weeks, which is way to high according to my expectation of 0 mins per week. Even if I devote that time to sleeping then also I will get 20+ mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spend doing meditation is comparable to that of sports, which is surprising to me because when I am meditating I find that I am time-travelling which is good.  
 
 ### Question 2: Document time spent in **(career_related_work) vs (total_well_being = sports + meditation) vs sleep**
 
-yada yada yada
+From the data visualization #2 we can see the actual time spent for each of the 3 big-picture terms I used namely `career_related_work`, `sleep`, and `Total_well_being`. Just for clarification, here by `Total_well_being` I mean total time spent in `sports` and `meditation`. We can notice that my bar for `Total_well_being` is comparable to that of `sleep`, but I have spent more time in the involuntary well being (sleep) than voluntary well being, which is again expected. But, the interesting thing is there is a small chunk of time I WASTE in `procrastination`. If I devote that time to either meditation or sports or any other type of well_being which I can count under `Total_well_being`, then I would achieve a more proper balance between the voluntary and involuntary sides of well being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accomodate other aspects of career than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation and sleep and sports to accommodate some more time for career_related_work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
 
 ### Question 3: Document time spent in **procrastination vs (total_well_being = sports + meditation)**
 
-yada yada yada
+From data visualization #2 we can tell that I am doing a decent job in turning towards the side of actual `total_well_being` without getting distracted to do `procrastination`. But, honestly I still think that I can further reduce the time I spend procrastinating in order to gain more mental and/or physical strength via `sports` and/or `meditation`. I don't think that `procrastination` is taking a major amount of time out of my schedule when in comes to the `career_related_work`, but I strongly believe that it is more productive to improve on actual skills and strengths which will be handy in life ahead.   
 
 \newpage
 # REFLECTION ON THE CALENDAR QUERY PROJECT <!-- e.g., Reflection -->
@@ -253,4 +256,13 @@ Write your one-page reflection here in paragraph form.  In particular, address:
 * As someone who analyzes others' data, what ethical responsibilities do you have?
 -->
 
+In the data collection process, I sometimes was not able to add the exact time intervals in which I performed a given activity. Moreover, I have to enter every specifications in the exact name of variables every time, which was annoying at times and really vague for some times where I was doing 2 or more of the listed activities at the same time. In data analysis I faced problem in wrangling and rechecking the calendar for spelling errors in activities because in that case I will get more variables which would be cumbersome to handle as we will be very prone to manipulate data at the cost of accuracy. Also, as I am a pretty consistent person as you can tell, I just added some in class hours in repetitions on the basis of daily and weekly on selected days, which didn't show up when I imported the data, so I had to manually enter each time.
+
+For future projects, I think I should try to enter each time slot individually as I complete the activity, so as tpo avoid the last time wrangling hassles. Moreover, I would highly consider reflecting upon my percentage involvement in different activities when I am doing them simultaneously and divide the time accordingly so as to minimize the sources of error.
+
+I think as a college student in the semester system, the life changes drastically as the semester progresses. So, I would rather prefer to collect data over an entire semester so as to get a better sense of my time allocations and priorities while including different situations which I encounter like tournaments and midterms. I believe that it would be difficult especially to be consistent and accurate at the smae time while manually entering the data for such a long sample time without help of a second person in managing the accuracy of data by eliminating the bias.
+
+As a client who provides data to the companies namely Facebook, Google and MapMyRun, I expect that my data is in a safe space where no one other than me can access, edit or delete it. This comes down to data privacy. I expect these companies to store my data in a very confidential manner such as an encryption, which is random and renderable only to the person who provides that data. The companies which made encryption, store data and provided functionality to render data should not be able to either access or modify the data without the consent of the user who provided the data.
+
+As someone who analyses the data generated by others, I have a ethical responsibility to keep all the aspects of data confidential. Also, I have the responsibility to not alter the original data while performing my analysis because I do not have the copyright or legal ownership to that data without the written legal consent of the person to whom the data belongs. 
 
