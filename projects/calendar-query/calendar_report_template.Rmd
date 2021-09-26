@@ -37,7 +37,7 @@ You may add subheadings as desired to break up the report.
 -->
 
 # How do I spend most precious and game-changing resource of the world: TIME?
-
+PROVIDED CODE CHUNK:
 <!--
 The code below is provided as a starting point for importing an `ics` file into R as a dataframe, doing some initial wrangling, and adding up the time spent on each activity. You are not required to use this code, so delete or modify it as you see fit. 
 
@@ -63,7 +63,7 @@ calendar_data <- "FinalDhyeyCal.ics" %>%
     activity = tolower(summary))
 
 # Compute total duration of time for each day & activity
-#Creating new dataset named activities
+#Creating new data set named activities
 #sums up the time of each activity in entire day
 activities <- calendar_data %>% 
   group_by(date, activity) %>%
@@ -75,10 +75,22 @@ activities <- calendar_data %>%
 ## Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
 
 
-I imported my 14-day data with Google calendar in `ical` format. The below mentioned questions have variables defined according to the name of activity which represents the time spent doing that activity. I defined an additional variable called `Total_well_being` which sums up the voluntary self-care in terms of meditation and sports for better analysis of below posed questions.
+I imported my 14-day calendar data from 09-12-2021 to 09-25-2021 with Google calendar in `ical` format. 
+
+In my calendar query project:
+
+1. `activity` represents career_related_work, sleep, meditation and procrastination as the name of activities.
+
+2. `duration_min` represents the time duration in minutes. 
+
+3. `actual_duration_min` represents total time spent doing that activity over the course of 14-days of data collection.
+
+4. `intended_duration_min` represents the intended total time spent doing that activity over the course of 14-days.
+
+5. `Total_well_being` sums up the voluntary self-care in terms of meditation and sports for better analysis of below posed questions.
 
 ### Question 1 
-Document intended time doing things **(career_related_work, sleeping, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
+Document intended time doing things **(career_related_work, sleep, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
 
 ### Question 2 
 Document time spent in **(career_related_work) vs (total_well_being = sports + meditation) vs sleep**
@@ -92,7 +104,7 @@ Document time spent in **procrastination vs (total_well_being = sports + meditat
 
 **1. (bar graph, activity type on x-axis, time (both actual and intended) on y-axis, different colors for actual and intended)**
 
-This data visualization is in form of grouped bar graph with time on y-axis and activity names on x-axis. As we have two types of times namely `actual_duration_min` and `intended_duration_min`, I am using a color scheme to distinguish them as mentioned in the legend of visualization, which is titled *"type"*. I have stacked the bars relating different types of times with the same activity so that user can compare between the actual and intended times without any difficulty.
+This data visualization is in form of grouped bar graph with time on y-axis and activity names on x-axis. We have two types of times: `actual_duration_min` and `intended_duration_min` representing the actual time and intended time respectively. I used a color scheme to distinguish actual and intended time durations as mentioned in the legend of visualization. I have stacked the bars relating different types of times of same activity so that we can compare between the actual and intended times without any difficulty.
 
 
 ```{r}
@@ -120,6 +132,9 @@ activities_full <- time_activities %>%
 
 # Dividing each activity's time field into two parts: 
 # actual and intended, so as to make the visualization
+# Used pivot_longer to accomplish this task.
+# Used "type" to store "actual" and "intended" types of times
+# Used "time" to store values
 activities_full_longer <- activities_full %>%
   pivot_longer(cols = actual_duration_min:intended_duration_min,
                names_to = "type",
@@ -134,7 +149,7 @@ activities_full_longer <- activities_full %>%
 
 # Using `ggplot` to layout the data set and specifications
 # Used `position = "dodge"`to join the actual & intended bars under activity
-# Used labs to add labels to different components of graph generated 
+# Used labs to add labels to different components of the generated graph
   ggplot(data = activities_full_longer,
          mapping = aes(x = activity,
                        y = time,
@@ -147,16 +162,17 @@ activities_full_longer <- activities_full %>%
          x = "Activity")
 ```
 \newpage
+
 ## Describe what information is conveyed through data visualization #2 (that you'll create below) here.
 
 **2. (Bar chart, Y & color indicating actual time in hours, X indicating modified overarching activities)**
 
-This data visualization is in the form of bar chart with activities on x-axis and time on y-axis. I combined the activities sports and meditation into one overarching theme called `Total_well_being` so as to allow a more big picture comparision in order to answer the questions posed by me. In this graph we plot the actual times doing each activity in hours. Moreover, as a visual cue I am using the shades of blue color to signify the quantity of hours spent, so that user can have better comparison between the far placed bars which can be decieving by eye for some. 
+This data visualization is in the form of bar chart with newly formed activities on x-axis and actual time in hours on y-axis. I have combined the activities sports and meditation into one overarching theme: `Total_well_being`. This facilitates a big-picture comparison in order to answer the questions posed by me as part of the calendar query assignment. In this graph we plot the actual times doing each activity in hours. Moreover, I am using the shades of blue color as a visual cue to quantify hours spent. This is intentionally implemented so that any average user can have better comparison between the far placed bars which can be deceiving by eye for some at first sight. 
 
 ```{r}
 # Code for data wrangling to create an appropriate data set for visualization #2
 
-# Using `fct_collapse` I made a new dataset which has a row named 
+# Using `fct_collapse` I made a new data set which has a row named 
 # `Total_well_being` which I define as `sports + meditation` 
 time_activities_new <- time_activities %>% 
   mutate("new_activities" = fct_collapse(
@@ -221,7 +237,7 @@ final_table <- calendar_data %>%
   summarise(duration_min = sum(as.numeric(duration_min))) %>%
   mutate(avg_duration_min = mean(as.numeric(duration_min)))
 
-
+activities
 ```
 
 \newpage
@@ -229,15 +245,15 @@ final_table <- calendar_data %>%
 
 ### Question 1: Document intended time doing things **(career_related_work, sleeping, sports, meditation, procrastination)** versus actual time doing those things, and compare results.
 
-From the data visualization #1 we can see that for each of the activities there are two bars placed near each other in a color coded fashion to represent the actual and intended times for each activity in terms of height of the bars measured along the y-axis. We can infer from the visualization #1 that I am doing a pretty decent job of fulfilling my expectations in terms of career_related_work, sports, sleep and meditation. But, I am doing 330 mins of procrastination over the period of 2-weeks, which is way to high according to my expectation of 0 mins per week. Even if I devote that time to sleeping then also I will get 20+ mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spend doing meditation is comparable to that of sports, which is surprising to me because when I am meditating I find that I am time-travelling which is good.  
+From the data visualization #1 we can see that for each of the activities there are two bars placed near each other in a color coded fashion to represent the actual and intended times for each activity in terms of height of the bars measured along the y-axis. We can infer from the visualization #1 that I am doing a decent job of fulfilling my expectations in terms of career_related_work, sports, sleep and meditation. However, I am doing 330 mins of procrastination over the period of 2-weeks, which is way too high according to my expectation of 0 mins per week. Even if I devote that time to sleeping then also I will get 20+ mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spend doing meditation is comparable to that of sports, which is surprising to me because when I am meditating it seems that time passes too fast.  
 
 ### Question 2: Document time spent in **(career_related_work) vs (total_well_being = sports + meditation) vs sleep**
 
-From the data visualization #2 we can see the actual time spent for each of the 3 big-picture terms I used namely `career_related_work`, `sleep`, and `Total_well_being`. Just for clarification, here by `Total_well_being` I mean total time spent in `sports` and `meditation`. We can notice that my bar for `Total_well_being` is comparable to that of `sleep`, but I have spent more time in the involuntary well being (sleep) than voluntary well being, which is again expected. But, the interesting thing is there is a small chunk of time I WASTE in `procrastination`. If I devote that time to either meditation or sports or any other type of well_being which I can count under `Total_well_being`, then I would achieve a more proper balance between the voluntary and involuntary sides of well being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accomodate other aspects of career than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation and sleep and sports to accommodate some more time for career_related_work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
+From the data visualization #2 we can see the actual time spent for each of the 3 big-picture terms I used namely `career_related_work`, `sleep`, and `Total_well_being`. Just for clarification, here by `Total_well_being` I mean total time spent in `sports` and `meditation`. We can notice that my bar for `Total_well_being` is comparable to that of `sleep`, but I have spent more time in the involuntary well being (sleep) than voluntary well being (meditation + sports), which is again expected. But, the interesting thing is there is a small chunk of time I WASTE in `procrastination`. If I devote that time to either meditation or sports or any other type of well_being which I can count under `Total_well_being`, then I would achieve a more proper balance between the voluntary and involuntary sides of well being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accommodate aspects of career other than the regular academics. After the analysis of the plot, I can tell that I can juggle between `meditation`, `sleep` and `sports` to accommodate some more time for `career_related_work` so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
 
 ### Question 3: Document time spent in **procrastination vs (total_well_being = sports + meditation)**
 
-From data visualization #2 we can tell that I am doing a decent job in turning towards the side of actual `total_well_being` without getting distracted to do `procrastination`. But, honestly I still think that I can further reduce the time I spend procrastinating in order to gain more mental and/or physical strength via `sports` and/or `meditation`. I don't think that `procrastination` is taking a major amount of time out of my schedule when in comes to the `career_related_work`, but I strongly believe that it is more productive to improve on actual skills and strengths which will be handy in life ahead.   
+From data visualization #2 we can tell that I am doing a decent job in turning towards the side of voluntary `total_well_being` without getting distracted to do `procrastination`. But, honestly I still think that I can further reduce the time I spend procrastinating in order to gain more mental and/or physical strength via `sports` and/or `meditation`. I don't think that `procrastination` is taking a major amount of time out of my schedule when in comes to the `career_related_work`, but I strongly believe that it is more productive to improve on actual skills and strengths which will be handy in life ahead.   
 
 \newpage
 # REFLECTION ON THE CALENDAR QUERY PROJECT <!-- e.g., Reflection -->
