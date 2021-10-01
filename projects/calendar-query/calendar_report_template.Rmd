@@ -63,8 +63,8 @@ calendar_data <- "FinalDhyeyCal.ics" %>%
     activity = tolower(summary))
 
 # Compute total duration of time for each day & activity
-#Creating new data set named activities
-#sums up the time of each activity in entire day
+# Creating new data set named activities
+# Sums up the time of each activity in entire day
 activities <- calendar_data %>% 
   group_by(date, activity) %>%
   summarize(duration_min = sum(as.numeric(duration_min)))
@@ -72,7 +72,6 @@ activities <- calendar_data %>%
 
 \newpage
 ## Describe your question(s) here.  Briefly describe your data collection process, including how you defined variables of interest.
-
 
 I imported my 14-day calendar data from 09-12-2021 to 09-25-2021 with Google calendar in `ical` format. I entered all events in Google calendars lying in the categories mentioned below as time progressed.
 
@@ -221,9 +220,11 @@ or
   https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf
 -->
 
-The rows would be time spent doing that activity day-wise and the average time row additionally.
+The row indicates time spent doing that activity day-wise and the average time row at last.
 
-The columns will indicate different activities so that I can fill up the respective day-wise times on cells
+The columns indicate different activities, so that we can look up the respective day-wise times devoted to certain activities in cells.
+
+This table shows that the time devoted in sleeping for me is perfectly consistent. Also, the table indicates that I am more consistent in `meditation` and `sports` when compared to `career_related_work` and `procrastination`. 
 
 
 ```{r, results = 'asis'}
@@ -251,7 +252,7 @@ rownames(mean_row) <- "Average Time per activity"
 final_summarized_table <- rbind(make.row.names = T, 
                                 intermediate_table, 
                                 mean_row) %>%
-  kableExtra::kable()
+  kableExtra::kable(digits = 0)
 
 # Printing final table
 final_summarized_table
