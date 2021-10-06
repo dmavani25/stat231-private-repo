@@ -125,10 +125,17 @@ Macbeth <- gutenberg_download(1533)
 
 ## <!-- 1.4 -->While the **gutenbergr** package is a great package, we want to be able to follow along with the code in the text for this chapter! Thankfully, the **mdsr** package already contains the Macbeth dataset. Run the code below to make the dataset appear in your environment pain. The next code chunk in the text introduces `str_split()`. Follow along with that block of code in the chunk below. Verify that  `Macbeth_raw` is a vector of length 1. What is the length of `macbeth` after using `str_split()`? Why are the lengths different?
 
-```{r}
+```{r, eval=TRUE}
 library(mdsr)
+library(gutenbergr)
 data(Macbeth_raw)
 
+macbeth <- Macbeth_raw %>%
+  str_split("\r\n") %>%
+  pluck(1)
+
+length(Macbeth_raw)
+length(macbeth)
 ```
 
 <!-- PROBLEM 2 ---------------------------------------------------------------->
