@@ -120,6 +120,7 @@ options(scipen = 1, knitr.kable.NA = '')
 ```{r}
 url <- "https://en.wikipedia.org/wiki/List_of_justices_of_the_Supreme_Court_of_the_United_States"
 
+robotstxt::paths_allowed(url)
 
 ```
 
@@ -131,7 +132,20 @@ Add your code from justices.R to the code chunk below.
 We do not want to re-run the code when we knit (we just want it to appear in the final pdf for the grader), so leave eval = FALSE in the chunk below.
 -->
 ```{r, eval = FALSE}
+library(rvest)
+tables <- url %>% 
+  read_html() %>% 
+  html_nodes("table")
 
+all_justices <- tables %>%
+  purrr::pluck(2) %>%
+  html_table()
+
+all_justices <- janitor::clean_names(all_justices)
+
+all_justices
+
+write_csv(all_justices, "justices.csv")
 ```
 
 ## <!-- 1.2 -->Load "justices.csv" into this file using the `read_csv()` function. Then, modify the code below as needed and run the code to create the variable `tenure_length` (a numeric variable containing each justice's time spent on the bench). Create a visualization to show the distribution of tenure length of U.S. Supreme Court judges.  Interpret the plot.
@@ -139,7 +153,7 @@ We do not want to re-run the code when we knit (we just want it to appear in the
 
 
 ```{r, fig.width = 3.6, fig.height = 2.4, fig.align = "center"}
-
+justices <- read_csv("justices.csv")
 # Run after loading your justices.csv file
 justices <- justices %>%
   # Remove extra line that comes in at end of table
@@ -204,13 +218,38 @@ Add your code from scrape-quotes.R to the code chunk below.
 We do not want to re-run the code when we knit (we just want it to appear in the final pdf for the grader), so leave eval = FALSE in the chunk below.
 -->
 ```{r, eval = FALSE}
+quotes_url <- "https://www.brainyquote.com/authors/bruce-lee-quotes"
+robotstxt::paths_allowed(quotes_url)
 
+quotes_html <- read_html(quotes_url)
+
+quotes <- quotes_html %>%
+  html_elements(".oncl_q") %>%
+  html_text()
+
+quotes <- quotes[which(quotes != " ")]
+
+people <- quotes_html %>%
+  html_elements(".oncl_a") %>%
+  html_text()
+
+# put in data frame with two variables (person and quote)
+resilience_quotes <- tibble(person = people, quote = quotes) %>% 
+  mutate(quote = str_remove_all(quote, "\n\n"),
+         # Prep quotes for markdown display when `results = "asis"`
+         display = paste0('> *"', as.character(quote), '"* --' , as.character(person)))
+
+write_csv(resilience_quotes, "data/quotes.csv")
 ```
 
 ## <!-- 2.2 -->Load "quotes.csv" into this file using the `read_csv()` function.  Write code to select *three* of the quotes at random and print them (i.e., set `n = 3` in the `slice_sample()` function).
 
 ```{r, results = "asis"}
+resilience_quotes <- read_csv("data/quotes.csv")
 
+slice_sample(resilience_quotes, n = 3) %>% 
+  pull(display) %>% 
+  cat()
 ```
 
 <!--
