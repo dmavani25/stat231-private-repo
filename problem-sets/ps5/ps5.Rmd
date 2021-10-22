@@ -150,9 +150,9 @@ write_csv(all_justices, "justices.csv")
 
 ## <!-- 1.2 -->Load "justices.csv" into this file using the `read_csv()` function. Then, modify the code below as needed and run the code to create the variable `tenure_length` (a numeric variable containing each justice's time spent on the bench). Create a visualization to show the distribution of tenure length of U.S. Supreme Court judges.  Interpret the plot.
 
+We can see the different distributions of the tenure_length according to the states in the united states.
 
-
-```{r, fig.width = 3.6, fig.height = 2.4, fig.align = "center"}
+```{r, fig.width = 8.6, fig.height = 2.4, fig.align = "center"}
 justices <- read_csv("justices.csv")
 # Run after loading your justices.csv file
 justices <- justices %>%
@@ -169,6 +169,15 @@ justices <- justices %>%
            sep = "\\(") %>%
   mutate(date_confirmed = lubridate::mdy(date_confirmed))
 
+ggplot(data = justices,
+       mapping = aes(x = state_c,
+                     y = tenure_years,
+                     color = state_c)) +
+  geom_point() +
+  labs(title = "Employer coverage vs spending",
+       y = "tenure in years",
+       x = "states",
+       color = "States")
 ```
 
 <!-- PROBLEM 2 ---------------------------------------------------------------->
