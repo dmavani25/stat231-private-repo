@@ -136,10 +136,19 @@ activities_full <- time_activities %>%
 # Used "time" to store values
 activities_full_longer <- activities_full %>%
   pivot_longer(cols = actual_duration_min:intended_duration_min,
-               names_to = "type",
-               values_to = "time"
+               names_to = "Type",
+               values_to = "Time"
   )
 
+# stylizing names for better graph readability
+activities_full_longer$activity[c(1,2)] <- c("career related work", "career related work")
+
+# stylizing names for better graph readability
+activities_full_longer$Type <- c("Actual","Intended","Actual",
+                                 "Intended","Actual","Intended",
+                                 "Actual","Intended","Actual",
+                                 "Intended")
+  
 # Data wrangling for visualization 1 ended. 
 ```
 
@@ -151,13 +160,13 @@ activities_full_longer <- activities_full %>%
 # Used labs to add labels to different components of the generated graph
   ggplot(data = activities_full_longer,
          mapping = aes(x = activity,
-                       y = time,
-                       color = type,
-                       fill = type)) +
+                       y = Time,
+                       color = Type,
+                       fill = Type)) +
   geom_col(position = "dodge")+
     labs(title = "Actual/intended time vs activity bar graph",
          subtitle = "in 2 week period",
-         y = "Time",
+         y = "Time (in minutes)",
          x = "Activity")
 ```
 \newpage
@@ -187,11 +196,15 @@ new_activities_dataset <- time_activities_new %>% group_by(new_activities) %>%
 
 # redefining time in hours for better relatability
 hourly_new_activities_dataset <- new_activities_dataset %>%
-  mutate(time_in_hours = time/60)
+  mutate(time_in_hours = time/60) 
 ```
 
 ```{r}
 # Code for creating data visualization #2
+
+# stylizing names for better graph readability
+hourly_new_activities_dataset$new_activities <- c(
+  "career related work","total well being","sleep","procrastination")
 
 # Using `ggplot` to layout the data set and specifications
 # Used labs to add labels to different components of graph generated
@@ -201,11 +214,12 @@ ggplot(data = hourly_new_activities_dataset,
                        color = time_in_hours,
                        fill = time_in_hours)) +
   geom_col()+
-    labs(title = "Actual time doing each activity 
-         broadly classified activities bar graph",
+    labs(title = "Actual time doing each activity broadly classified activities bar graph",
          subtitle = "in 2 week period",
          y = "Time (in hours)",
-         x = "Broadly Classified Activities")
+         x = "Broadly Classified Activities",
+         color = "Time (in hours)",
+         fill = "Time (in hours)")
 ```
 
 \newpage
@@ -255,7 +269,12 @@ rownames(mean_row) <- "Average Time per activity"
 final_summarized_table <- rbind(make.row.names = T, 
                                 intermediate_table, 
                                 mean_row) %>%
-  kableExtra::kable(digits = 0, booktabs = TRUE)
+  kableExtra::kable(digits = 0, booktabs = TRUE, 
+                    col.names = c("Career Related Work",
+                                  "Meditation",
+                                  "Procrastination",
+                                  "Sleep", "Sports")) %>%
+  kableExtra::row_spec(row = 15, bold = TRUE)
 
 # Printing final table
 final_summarized_table
@@ -271,7 +290,7 @@ We can infer from the visualization #1 that I am doing a decent job of fulfillin
 
 ### Question 2: Document time spent in **(career_related_work) vs (Total_well_being = sports + meditation) vs sleep**
 
-We can notice that my bar for total well being is comparable to that of sleep, but I have spent more time in the involuntary well being (sleep) than voluntary well being (total well being = meditation + sports), which is again expected. But, the interesting thing is there is a small chunk of time I waste in procrastination, which is taking away a piece from my well being. If I devote that time to either meditation or sports or any other type of voluntary well_being which I can count under total well being, then I would achieve a more proper balance between the voluntary and involuntary sides of well-being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accommodate aspects of career other than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation, sleep and sports to accommodate some more time for career_related_work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
+We can notice that my bar for total well being is comparable to that of sleep, but I have spent more time in the involuntary well being (sleep) than voluntary well being (total well being = meditation + sports), which is again expected. But, the interesting thing is there is a small chunk of time I waste in procrastination, which is taking away a piece from my well being. If I devote that time to either meditation or sports or any other type of voluntary well being which I can count under total well being, then I would achieve a more proper balance between the voluntary and involuntary sides of well-being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accommodate aspects of career other than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation, sleep and sports to accommodate some more time for career related work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
 
 ### Question 3: Document time spent in **procrastination vs (Total_well_being = sports + meditation)**
 
@@ -280,8 +299,8 @@ From data visualization #2 we can tell that I am doing a decent job in turning t
 \newpage
 # REFLECTION ON THE CALENDAR QUERY PROJECT <!-- e.g., Reflection -->
 
-<!--
-Write your one-page reflection here in paragraph form.  In particular, address:
+
+**Write your one-page reflection here in paragraph form.  In particular, address:**
 
 * What difficulties in the data collection and analysis process did you encounter?  Identify two of your main hurdles in gathering accurate data.
 
@@ -292,7 +311,7 @@ Write your one-page reflection here in paragraph form.  In particular, address:
 * As someone who provides data, what expectations do you have when you give your data (e.g. to Facebook, Google, MapMyRun, etc.)?  
 
 * As someone who analyzes others' data, what ethical responsibilities do you have?
--->
+
 
 Sometimes during the data collection process I was not able to add the exact time intervals in which I performed a given activity. Moreover, I found the need to enter every specification every time very intimidating and really vague especially when I was doing 2 or more of the listed activities at the same time. In data analysis, I faced problems in wrangling and rechecking the calendar for spelling errors in activities to avoid unwanted splitting of variable data. Also, as I am a pretty consistent person as you can tell, I just added some in class hours in repetitions on the basis of daily and weekly on selected days, which didn't show up when I imported the data, so I had to manually enter everything again, which made things even worse.
 
