@@ -259,19 +259,18 @@ final_summarized_table
 
 ### Question 1: Document and compare intended time doing activities like **career related work, sleep, sports, meditation and procrastination** with actual time doing those activities, and compare results.
 
-We can infer from the visualization #1 that I am doing a decent job of fulfilling my expectations in terms of career related work, sports, sleep and meditation. However, I am doing 330 mins of procrastination over the period of 2-weeks, which is way too high according to my intended value of 0 mins. If I devote that time to sleep, then also I will get 20+ mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spend doing meditation is comparable to that of sports, which is surprising to me because when I am doing meditation it seems that time passes too fast.  
+We can infer from the visualization 1 that I am doing a decent job of fulfilling my expectations in terms of career related work, sports, sleep and meditation. However, I am doing 330 mins of procrastination over the period of 2-weeks, which is way too high according to my intended value of 0 mins. If I devote that time to sleep, then I can mange to get more than 20 mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spent doing meditation is comparable to that of sports, which is surprising to me because when I am doing meditation it seems that time passes too fast.  
 
 ### Question 2: Document and compare the actual time spent in performing activities like **career related work, total well being and sleep**
 
-We can notice that my bar for total well being is comparable to that of sleep, but I have spent more time in the involuntary well being (sleep) than voluntary well being (total well being = meditation + sports), which is again expected. But, the interesting thing is there is a small chunk of time I waste in procrastination, which is taking away a piece from my well being. If I devote that time to either meditation or sports or any other type of voluntary well being which I can count under total well being, then I would achieve a more proper balance between the voluntary and involuntary sides of well-being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accommodate aspects of career other than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation, sleep and sports to accommodate some more time for career related work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
+We can notice that bar height for total well being is comparable to that of sleep. But, on a closer look we can conclude that I have spent more time in the involuntary well being (sleep) than voluntary well being (total well being), which is again expected. The interesting thing is there is a small chunk of time I waste in procrastination, which can be considered as a piece taking away some time from my well being. If I devote that time to any type of voluntary well being, then I would achieve a more proper balance between the voluntary and involuntary sides of well-being. Moreover, I also noticed that as the semester progresses, I would need to increase my work week from near about 80 hours to 100 or 120 hours so as to accommodate aspects of career other than the regular academics. After the analysis of the plot, I can tell that I can juggle between meditation, sleep and sports to accommodate some more time for career related work so as to achieve a perfect work life balance where I can maintain both mental and physical peace. 
 
 ### Question 3: Document and compare the actual time spent in **procrastination and total well being**
 
-From data visualization #2 we can tell that I am doing a decent job in turning towards the side of voluntary total well being without getting distracted to do procrastination. But, honestly I still think that I can further reduce the time I spend procrastinating in order to gain more mental and/or physical strength via sports and/or meditation. I don't think that procrastination is taking a major amount of time out of my schedule when in comes to the career related work, but I strongly believe that it is more productive to improve on actual skills and strengths which will be handy in life ahead.   
-
+From data visualization 2 we can tell that I am doing a decent job in spending time in activities which count under total well being without getting distracted to do procrastination. But, honestly I still think that I can further reduce the time I spend procrastinating in order to gain more mental and/or physical strength via sports and/or meditation. From the big picture, I don't think that procrastination is taking a major amount of time out of my schedule when in comes to the career related work, but I strongly believe that it is more productive to further reduce procrastination. 
 \newpage
-# Reflection on the Calendar Query Project
 
+## Reflection on the Calendar Query Project
 
 **Write your one-page reflection here in paragraph form.  In particular, address:**
 
@@ -285,6 +284,7 @@ From data visualization #2 we can tell that I am doing a decent job in turning t
 
 * As someone who analyzes others' data, what ethical responsibilities do you have?
 
+**Answer:**
 
 Sometimes during the data collection process I was not able to add the exact time intervals in which I performed a given activity. Moreover, I found the need to enter every specification every time very intimidating and really vague especially when I was doing 2 or more of the listed activities at the same time. In data analysis, I faced problems in wrangling and rechecking the calendar for spelling errors in activities to avoid unwanted splitting of variable data. Also, as I am a pretty consistent person as you can tell, I just added some in class hours in repetitions on the basis of daily and weekly on selected days, which didn't show up when I imported the data, so I had to manually enter everything again, which made things even worse.
 
