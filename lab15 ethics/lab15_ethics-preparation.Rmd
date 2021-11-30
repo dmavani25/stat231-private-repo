@@ -148,14 +148,14 @@ Please complete this very brief [Google form](https://forms.gle/zuTR9QR6kNKvmFLc
 
 
 
-## <!-- 2.3 -->In Buolamwini's facial recognition example, there seems to be a straightforward solution: expand the training set to include diverse individuals. What factors do you think have prevented this "straightforward solution" to being implemented more readily? 
+## <!-- 2.3 --> In Buolamwini's facial recognition example, there seems to be a straightforward solution: expand the training set to include diverse individuals. What factors do you think have prevented this "straightforward solution" to being implemented more readily? 
 
 
 
-## <!-- 2.4 -->Do you think "expanding the training set" would solve any potential fairness issues in the context of Ping An's use of facial recognition? What about if the algorithm was going to determine whether or not you get into graduate school? Or whether or not you get the next job or summer internship that you apply to?
+## <!-- 2.4 --> Do you think "expanding the training set" would solve any potential fairness issues in the context of Ping An's use of facial recognition? What about if the algorithm was going to determine whether or not you get into graduate school? Or whether or not you get the next job or summer internship that you apply to?
 
 
 
-## <!-- 2.5 -->The McKinsey article notes, "Machine learning models typically act on vastly larger data sets, including unstructured data such as natural language, images, and speech. The algorithms are typically far more complex than their statistical counterparts . . .". It is the complexity of these algorithms that Cathy O'Neil argues makes them so dangerous. Why? What are her justifications for that claim? Do you agree or disagree? Please explain.
+## <!-- 2.5 --> The McKinsey article notes, "Machine learning models typically act on vastly larger data sets, including unstructured data such as natural language, images, and speech. The algorithms are typically far more complex than their statistical counterparts . . .". It is the complexity of these algorithms that Cathy O'Neil argues makes them so dangerous. Why? What are her justifications for that claim? Do you agree or disagree? Please explain.
 
 
