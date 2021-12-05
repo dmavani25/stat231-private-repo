@@ -27,7 +27,7 @@ options(digits = 6, scipen = 1, knitr.kable.NA = '')
 ```
 
 # How do I spend most precious and game-changing resource of the world: TIME?
-PROVIDED CODE CHUNK:
+
 ```{r, eval = TRUE}
 # Data import and preliminary wrangling
 calendar_data <- "FinalDhyeyCal.ics" %>% 
@@ -54,9 +54,11 @@ activities <- calendar_data %>%
 
 \newpage
 
-## Data Collection Process and Nomenclature used
+## Introduction, Data Collection Process and Nomenclature
 
-I used Google calendar for all of my time-keeping and I updated it as time progressed. I imported my 14-day calendar data from 09-12-2021 to 09-25-2021 with Google calendar in `ical` format.
+As a college freshman, I was excited to explore how I am using my time when school is in progress. Hence, I used this project to get a sense of how I am managing my time and am I meeting my expectations. Specifically, I wanted to explore my schedule's time divide between the activities related to mental health, physical heath and studies in general. Thus, I collected the data and framed the following questions.
+
+I used Google calendar for all of my time-keeping and I updated it as time progressed. I entered the specific time slots at different times throughout the day in the Google calendar on my iPhone for convenience. I imported my 14-day calendar data from 09-12-2021 to 09-25-2021 with Google calendar in `ical` format.
 
 In my calendar query project, the following are the variables which I used:
 
@@ -81,13 +83,9 @@ Document and compare the actual time spent in **procrastination and total well b
 
 
 \newpage
-## Data Visualization #1:
+## Data Visualization 1
 
 This data visualization is in form of histogram with time on y-axis and activity type on x-axis. We have two types of times: the actual and intended time spent performing an activity respectively. I used a color scheme to distinguish actual and intended time duration as mentioned in the legend labelled as type. I have stacked the bars relating different types of times of same activity to aid us in comparing the actual and intended times with less visual or statistical difficulty.
-
-We can see that my actual time doing the activities was always greater than the intended time doing that activity except the case of procrastination. Moreover, my actual and intended times for doing each activity were really close. As far as the extremes were concerned, we can notice that I spent most time doing career related work. Not surprisingly, I spent least time doing procrastination. 
-
-In addition to this, we can see that I spent almost double the time I spent sleeping in doing career related work. Finally, according to the figure below, I spent almost equal time meditating and playing sports. This indicates that I am managing my mental and physical well being in an acceptable manner.
 
 ```{r wrangling-for-data-visualization-1}
 # Code for data wrangling to create an appropriate data set for visualization #1
@@ -96,7 +94,7 @@ In addition to this, we can see that I spent almost double the time I spent slee
 # Summarizing the total time consumed per activity over the data period.
 time_activities <- activities %>%
   group_by(activity) %>%
-  summarise("actual_duration_min" = sum(duration_min))
+  summarise(actual_duration_min = sum(duration_min))
 
 # Hardcoding a new data frame 
 # storing the intended times spent for performing each activity
@@ -119,65 +117,58 @@ activities_full <- time_activities %>%
 # Used "type" to store "actual" and "intended" types of times
 # Used "time" to store values
 activities_full_longer <- activities_full %>%
-  pivot_longer(cols = actual_duration_min:intended_duration_min,
+  rename("Actual" = actual_duration_min,
+         "Intended" = intended_duration_min) %>%
+  pivot_longer(cols = Actual:Intended,
                names_to = "Type",
-               values_to = "Time"
-  )
+               values_to = "Time")
 
 # stylizing names for better graph readability
 activities_full_longer$activity[c(1,2)] <- c("career related work", "career related work")
-
-# stylizing names for better graph readability
-activities_full_longer$Type <- c("Actual","Intended","Actual",
-                                 "Intended","Actual","Intended",
-                                 "Actual","Intended","Actual",
-                                 "Intended")
 ```
 
-```{r plotting-data-viualization-1, eval = TRUE}
+```{r plotting-data-viualization-1, eval = TRUE, fig.width=6.4, fig.height=4}
 # Code for creating data visualization #1
-
+# Setting the height and width of the figure in the golden ratio
 # Using `ggplot` to layout the data set and specifications
 # Used `position = "dodge"` to join the actual & intended bars under activity
 # Used labs to add labels to different components of the generated graph
 ggplot(data = activities_full_longer,
        mapping = aes(x = activity,
-                     y = Time,
+                     y = Time/60,
                      color = Type,
                      fill = Type)) +
 geom_col(position = "dodge")+
   labs(title = "Comparing Actual and Intended Time for Different Activities",
        subtitle = "in 2 week period",
-       y = "Time (in minutes)",
+       y = "Time (in hours)",
        x = "Activity")
 ```
+We can see that my actual time doing the activities was always greater than the intended time doing that activity except the case of procrastination. Moreover, my actual and intended times for doing each activity were really close. As far as the extremes were concerned, we can notice that I spent most time doing career related work. Not surprisingly, I spent least time doing procrastination. 
+
+In addition to this, we can see that I spent almost double the time I spent sleeping in doing career related work. Finally, according to the figure below, I spent almost equal time meditating and playing sports. This indicates that I am managing my mental and physical well being in an acceptable manner.
+
 \newpage
 
-## Data Visualization #2
+## Data Visualization 2
 
 This data visualization is in the form of bar chart with updated activities on x-axis and actual time (in hours) on y-axis. This facilitated a big-picture comparison in order to answer the questions posed. In this graph I plotted the actual times I spent performing each activity in hours. Moreover, I used the shades of blue color as a visual cue to quantify hours spent. This is intentionally implemented so that any user can have better comparison between the bar pairs.
 
-We can conclude that I spent comparable times in performing activities which come under total well being and sleeping. Moreover, time spent by me in procrastination when added to the same in activities leading to total well being can prove beneficial for me by allowing the time spent by me sleeping to balance out better with time spent in doing activities leading to total well being. 
 
-Time spent in ascending order is:
-procrastination < total well being < sleep < career related work 
-
-Finally, we can see that I spent almost double the time I spent sleeping in doing career related work.
-
-```{r}
+```{r wrangling-for-data-visualization-2}
 # Code for data wrangling to create an appropriate data set for visualization #2
 
 # Using `fct_collapse` I made a new data set which has a row named 
 # `Total_well_being` which I define as `sports + meditation` 
 time_activities_new <- time_activities %>% 
-  mutate("new_activities" = fct_collapse(activity, 
+  mutate(new_activities = fct_collapse(activity, 
                                          Total_well_being = c("sports",
                                                               "meditation")))
 
 # Again summarizing total time per activity and dropping possible NAs.
 new_activities_dataset <- time_activities_new %>% 
   group_by(new_activities) %>%
-  summarize("time" = sum(actual_duration_min)) %>%
+  summarize(time = sum(actual_duration_min)) %>%
   drop_na()
 
 # redefining time in hours
@@ -185,7 +176,7 @@ hourly_new_activities_dataset <- new_activities_dataset %>%
   mutate(time_in_hours = time/60) 
 ```
 
-```{r}
+```{r plotting-data-viualization-2, eval = TRUE, fig.width=6.4, fig.height=4}
 # Code for creating data visualization #2
 
 # stylizing names for better graph readability
@@ -208,18 +199,23 @@ ggplot(data = hourly_new_activities_dataset,
          fill = "Time (in hours)")
 ```
 
+We can conclude that I spent comparable times in performing activities which come under total well being and sleeping. Moreover, time spent by me in procrastination when added to the same in activities leading to total well being can prove beneficial for me by allowing the time spent by me sleeping to balance out better with time spent in doing activities leading to total well being. 
+Time spent in ascending order is:
+procrastination < total well being < sleep < career related work 
+
+Finally, we can see that I spent almost double the time I spent sleeping in doing career related work.
+
 \newpage
 ## Tabular Visualization
 
 In the table, rows indicate day-wise time spent doing that activity and the average time row at last. The columns indicate different activities, so that we can look up the respective day-wise times devoted to certain activities in the cells.
 
-We can conclude that the time devoted in sleeping for me is perfectly consistent statistically because the mean is same as the value for any specific day. Also, we can say that I am more consistent in meditation and sports compared to career related work and procrastination. 
+We can conclude that the time devoted in sleeping for me is perfectly consistent statistically because the mean is same as the value for any specific day. Also, we can say that I am more consistent in meditation and sports compared to career related work and procrastination. To lend support to this argument, we can look at the standard deviation row in the table. It shows that my standard deviation in time spent doing career related work was the highest and the same while sleeping was the lowest. 
 
-Moreover, we can see the average time spent row at the very bottom of the table for a big-picture estimate of time spent doing each activity per day. On an average, the descending order of time spent doing the given activity each day is:
+Moreover, we can see the average time spent row for a big-picture estimate of time spent doing each activity per day. On an average, the descending order of time spent doing the given activity each day is:
 career related work > sleep > meditation > sports > procrastination.
-```{r, results = 'asis'}
-# Code for table
 
+```{r, results = 'asis', tabular-viualization, eval = TRUE}
 # Modifying activities data set by removing all NAs
 # Pivoting wider to move activity to column names and duration_min to cells
 initial_table <- activities %>%
@@ -231,24 +227,37 @@ initial_table <- activities %>%
 # Changing the column of dates to row names
 intermediate_table <- column_to_rownames(initial_table, "date")
 
-# Creating a new data table with a new row containing activity-wise mean
+# Creating a new data table with a new row containing activity-wise mean and sd
 mean_row <- summarize_all(intermediate_table, mean)
+stddev_row <- summarize_all(intermediate_table, sd)
+max_row <- summarize_all(intermediate_table, max)
+min_row <- summarize_all(intermediate_table, min)
 
 # Renaming the row
-rownames(mean_row) <- "Average Time per activity"
+rownames(mean_row) <- "Average Time over 14 days"
+rownames(stddev_row) <- "Standard Deviation over 14 days"
+rownames(max_row) <- "Maximum Time over 14 days"
+rownames(min_row) <- "Minimum Time over 14 days"
 
 # Binding them together to create a final table
 # Using kable to stylize the final table
 final_summarized_table <- rbind(make.row.names = T, 
                                 intermediate_table, 
-                                mean_row) %>%
-  kableExtra::kable(digits = 0, booktabs = TRUE, 
-                    col.names = c("Career Related Work",
-                                  "Meditation",
-                                  "Procrastination",
-                                  "Sleep", "Sports")) %>%
-  kableExtra::row_spec(row = 15, bold = TRUE)
+                                mean_row,
+                                stddev_row,
+                                max_row,
+                                min_row) %>%
+  kableExtra::kable(digits = 0, format = "latex", booktabs = TRUE, 
+                    col.names = c("Time for Career Related Work (hours)",
+                                  "Time for Meditation (hours)",
+                                  "Time for Procrastination (hours)",
+                                  "Time for Sleep (hours)",
+                                  "Time for Sports (hours)")) %>%
+  kableExtra::row_spec(row = c(15,16,17,18), bold = TRUE) %>%
+  kableExtra::kable_styling(latex_options = c("striped", "scale_down"))
+```
 
+```{r}
 # Printing final table
 final_summarized_table
 
@@ -259,7 +268,7 @@ final_summarized_table
 
 ### Question 1: Document and compare intended time doing activities like **career related work, sleep, sports, meditation and procrastination** with actual time doing those activities, and compare results.
 
-We can infer from the visualization 1 that I am doing a decent job of fulfilling my expectations in terms of career related work, sports, sleep and meditation. However, I am doing 330 mins of procrastination over the period of 2-weeks, which is way too high according to my intended value of 0 mins. If I devote that time to sleep, then I can mange to get more than 20 mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spent doing meditation is comparable to that of sports, which is surprising to me because when I am doing meditation it seems that time passes too fast.  
+We can infer from the visualization 1 that I am doing a decent job of fulfilling my expectations in terms of career related work, sports, sleep and meditation. However, I am doing 5.5 hours of procrastination over the period of 2-weeks, which is way too high according to my intended value of 0 hours. If I devote that time to sleep, then I can mange to get more than 20 mins of extra sleep everyday, which will in turn make my sleep to 6 hours each day. Moreover, we can see that the amount of time I spent doing meditation is comparable to that of sports, which is surprising to me because when I am doing meditation it seems that time passes too fast.  
 
 ### Question 2: Document and compare the actual time spent in performing activities like **career related work, total well being and sleep**
 
